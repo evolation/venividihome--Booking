@@ -10,9 +10,22 @@ services:
       DB_DATABASE: hotel_app
       DB_USERNAME: root
       DB_PASSWORD: secret
+    volumes:
+      - .:/var/www/html:cached
+      - /var/www/html/vendor
+      - /var/www/html/node_modules
     depends_on:
       - db
-    command: sh -c "cp .env.example .env && php artisan key:generate --force && php artisan migrate:fresh --seed && php artisan serve --host=0.0.0.0 --port=6999"
+    command: >
+      sh -c "
+        cp .env.example .env &&
+        composer install &&
+        php artisan key:generate --force &&
+        php artisan migrate:fresh --seed &&
+        npm install &&
+        npm run build &&
+        php artisan serve --host=0.0.0.0 --port=6999
+      "
 
   db:
     image: mysql:8.0
