@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    ports:
+      - "6999:6999"
+    environment:
+      DB_HOST: db
+      DB_DATABASE: hotel_app
+      DB_USERNAME: root
+      DB_PASSWORD: secret
+    depends_on:
+      - db
+    command: sh -c "cp .env.example .env && php artisan key:generate --force && php artisan migrate:fresh --seed && php artisan serve --host=0.0.0.0 --port=6999"
+
+  db:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: secret
+      MYSQL_DATABASE: hotel_app
+    ports:
+      - "3306:3306"
+    volumes:
+      - db-data:/var/lib/mysql
+
+volumes:
+  db-data:
