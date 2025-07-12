@@ -57,6 +57,17 @@ npm run dev
 npm run build
 ```
 
+### Using Docker
+
+The project provides a `Dockerfile` and a `docker-compose.yml` so the application can be run in containers.
+To build and start everything simply run:
+
+```bash
+docker compose up --build
+```
+
+The application will be available at http://localhost:6999.
+
 ### Login:
 
 -   Email: wailantirajoh@gmail.com
